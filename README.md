@@ -1,6 +1,6 @@
-# stats462
+# Statistics 462
 
-This repository contains content, quizzes, assignments, and solutions for Statistics 462, run by Aaron Springford. The course mostly follows the book "Data Analysis and Graphics Using R: An Example-Based Approach" ("DAAG") by John Maindonald and W. John Braun.
+This repository contains content, quizzes, assignments, and solutions for Statistics 462, [run by Aaron Springford](http://www.mast.queensu.ca/~aaron/stat462.html). The course mostly follows the book "Data Analysis and Graphics Using R: An Example-Based Approach" ("DAAG") by John Maindonald and W. John Braun.
 
 In many cases, solutions exist in both python and R.
 
