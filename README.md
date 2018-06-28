@@ -29,7 +29,8 @@ In order to run the python code in this project, you should have python 3.5+ and
 python3 -m venv env
 # Enter environment
 source env/bin/activate
-# If first time, install requirements
+# If first time, install make sure pip is newest and install requirements
+pip3 install --upgrade pip
 pip3 install -r requirements_python.txt
 # run your scripts
 python3 my_script.py
