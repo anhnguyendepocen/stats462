@@ -22,13 +22,14 @@ fig.savefig('insects_python.png')
 #plt.plot(data.index,data.values,label=data.columns)
 #plt.xlabel("Time")
 #plt.ylabel("Number Left")
+#plt.legend()
 #plt.savefig("insects_python.png")
 
 # My preferred method - slightly more code, but finer control of plotting. No
 # benefits of this until you start to do non-standard plotting
 #fig = plt.figure()
 # "(111)" is (n_cols, n_rows, which one you're currently on)
-#ax = fig.add_subplot(111)
+#ax = fig.add_subplot(1,1,1)
 #ax.plot(data.index, data.values, label=data.columns)
 #ax.set_ylabel("Number Left")
 #ax.set_xlabel("Time")

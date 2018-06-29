@@ -1,6 +1,6 @@
 
 # This seems to default to good values. The index column gets labeled as "X"
-insects <- read.csv("insects.csv")
+insects <- read.csv("insects.csv", header=TRUE, row.names=1)
 
 print(insects)
 
@@ -15,6 +15,8 @@ lines(insects[,"X"], insects[,"C"], col = "black")
 lines(insects[,"X"], insects[,"D"], col = "green")
 lines(insects[,"X"], insects[,"E"], col = "yellow")
 lines(insects[,"X"], insects[,"F"], col = "orange")
+
+plot(insects[,"X"],insects[,-1])
 
 # Legend doesn't work and I'm losing patience.
 #legend()
