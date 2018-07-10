@@ -55,7 +55,7 @@ table(gender)
 # note that mistake happens because case matters
 
 table(gender, exclude = NULL)
-# Question: not exactly sure what exclude does here
+# shows how many were excluded?
 
 rm(gender)
 
@@ -84,7 +84,6 @@ gender1 = with( socsupport, expr = abbreviate(gender, 1))
 
 # compare levels of new and old tables
 table(gender1)
-table(gender)
 
 # abbreviate countries to only 3 letters
 country3 = with( socsupport, expr = abbreviate(country, 3))
@@ -97,3 +96,31 @@ lab = paste(gender1, country3, num, sep=":")
 
 # make a box plot 
 plot(formula =  BDI ~ age, data = socsupport)
+
+# find the row numbers of the points that are outliers
+with(socsupport, identify(x = age, y = BDI, labels = lab))
+# (hit esc to exit identify and print row snumbers on plot and in command line)
+
+
+## 1.19
+
+head(vlt)
+
+vltcbv = stack( vlt[1:3, ] )
+table(vltcbv$values, vltcbv$ind)
+table(vltcbv)
+# Question: What is going on here? I don't understand why table vltcbv looks different from table vlt
+
+## 1.21
+oldpar <- par( mfrow=c(2,4) )
+for( i in 2:9 ){
+  plot( austpop[,1], log( austpop[,i] ), xlab = "Year",
+        ylab = names(austpop)[i], pch=16, ylim=c(0,10) )
+}
+
+pdf(file = "q1-21_eadie.pdf", useDingbats = FALSE, width=8, height=5)
+par( mfrow=c(2,4))
+
+sapply(X = 2:9, FUN = function(x)  plot(austpop$year, y = log(austpop[, x]), ylim=c(0,10), xlab = "Year", ylab=colnames(austpop)[x], pch=19 ) )
+
+dev.off()
