@@ -19,9 +19,9 @@
 > dev.off()
 ```
 
-![oring_cut](/home/rory/stats462/labs/oring_cut.png)
+![oring_cut](oring_cut.png)
 
-![oring](/home/rory/stats462/labs/oring.png)
+![oring](oring.png)
 
 # 1.3
 
