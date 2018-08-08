@@ -106,10 +106,13 @@ with(socsupport, identify(x = age, y = BDI, labels = lab))
 
 head(vlt)
 
-vltcbv = stack( vlt[1:3, ] )
+vltcbv = stack( vlt[, 1:3 ] )
+
 table(vltcbv$values, vltcbv$ind)
 table(vltcbv)
-# Question: What is going on here? I don't understand why table vltcbv looks different from table vlt
+
+plot(table(vltcbv$values, vltcbv$ind)/nrow(vlt), main= "Contingency Table")
+
 
 ## 1.21
 oldpar <- par( mfrow=c(2,4) )
