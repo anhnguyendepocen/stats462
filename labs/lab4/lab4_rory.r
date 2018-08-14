@@ -78,14 +78,14 @@ Markov <- function(N=100, initial.value=1, P){
     X - 1
 }
 
-P <- matrix(
+Pb <- matrix(
     c(0.6, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.3, 0.3),
     nrow=3,
     ncol=3,
     byrow = TRUE)
 
 # a
-vals <- table(Markov(N=1000, initial.value=0, P))
+vals <- table(Markov(N=1000, initial.value=0, Pb))
 print("Percentage of time for each state:")
 print(vals/1000)
 
