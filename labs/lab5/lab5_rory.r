@@ -63,3 +63,26 @@ print(result)
 # This implies that these items are likely *not independent*
 # We can say something along the lines of "There isn't no relationship between these treatments."
 
+# 4.14
+#
+
+library(boot)
+
+z.transform = function(r) .5*log((1r)/(1-r))
+z.inverse = function(z) (exp(2*z) -1)/(exp(2*z)1)
+possum.fun = function(data, indices) {
+    chest = data$chest[indices]
+    belly = data$belly[indices]
+    cor(belly, chest)
+}
+possum.boot = boot(possum, possum.fun, R=999)
+print(boot.ci(possum.boot, type="perc")$percent[4:5])
+
+possum.funz = function(data, indices) {
+    chest = data$chest[indices]
+    belly = data$belly[indices]
+    z.transform(cor(belly, chest))}
+possum.bootz = boot(possum, possum.funz, R=999)
+print(z.inverse(boot.ci(possum.bootz, type="perc")$percent[4:5]))
+
+# The transformation is useful for helping to create a symmetric distribution of the correlation coefficient at high correlations. If you didn't do this, the standard deviation of the correlation coefficient would get smaller as you got closer to one meaning you'd need to take a larger number of bootstrap samples to effectively sample the space between r (near 1) and 1. This allows you to sample that space more efficiently. If you simply plot the z distribution, you'll see it's not important for values of |z| ~< 0.75.
