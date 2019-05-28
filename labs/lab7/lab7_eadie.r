@@ -48,6 +48,7 @@ abline(a = testcoefs[3]+testcoefs[1], b = testcoefs[2], col=test$car[2])
 abline(a = testcoefs[4]+testcoefs[1], b = testcoefs[2], col=test$car[3])
 
 fittest
+grid()
 
 # (c)
 newfit = lm(formula = distance ~ car:angle, data = toycars)
@@ -75,16 +76,100 @@ plot(newfit)
 
 str(geophones)
 
-geofits = lm(formula = thickness ~ poly(distance, degree=3), data = geophones)
+# fit a cubic polynomial
+geofits = lm(formula = thickness ~ poly(distance, degree=4), data = geophones)
 
+par(mfrow=c(1,1))
 with(geophones, plot(thickness~distance))
 
 # create a new data frame that contains the values used in the regression
 newdf = geophones
 newdf$thickness = predict.lm(object = geofits)
 
-with(newdf, lines(thickness~distance, lty=2, col="blue"))
+with(newdf, lines(thickness~distance, lty=2, col="purple"))
 
 summary(geofits)
 par(mfrow = c(2,2))
 plot(geofits)
+
+#################
+# 7.8
+
+# ns() Description from help file
+# 
+# Generate the B-spline basis matrix for a natural cubic spline.
+# 
+# Usage
+# 
+# ns(x, df = NULL, knots = NULL, intercept = FALSE,
+#    Boundary.knots = range(x))
+
+# do spline regression for 4, 5, and 6 degrees of freedom
+splinefit4 = with(geophones, lm(thickness ~ ns(distance, df=4)) )
+splinefit5 = with(geophones, lm(thickness ~ ns(distance, df=5)) )
+splinefit6 = with(geophones, lm(thickness ~ ns(distance, df=6)) )
+
+# get the summary of the fits
+summary(splinefit4)
+summary(splinefit5)
+summary(splinefit6)
+
+# calculate y values for plotting, using predict()
+y4  = predict(object = splinefit4)
+y5  = predict(object = splinefit5)
+y6  = predict(object = splinefit6)
+
+# plot the data and the spline regresions
+par(mfrow=c(1,1))
+with(geophones, plot(thickness~distance))
+grid()
+lines(geophones$distance, y4, col="blue")
+lines(geophones$distance, y5, col="red")
+lines(geophones$distance, y6, col="darkgreen")
+# add a legend
+legend("topright", legend = c("4 dof", "5 dof", "6 dof"), col=c("blue", "red", "darkgreen"), lty=c(1,1,1))
+
+# look at the diagnostic plots
+par(mfrow=c(2,2))
+plot(splinefit4)
+plot(splinefit5)
+plot(splinefit6)
+
+
+# make function for finding the confidence intervals
+CIcurves = function(form, data, lty=1, col=3, newdata=data.frame(rate=seq(from=50, to=175, by=25)) ){
+  
+  rates.lm = lm(form, data=data)
+  x = newdata[, all.vars(form)[2]]
+  hat = predict(rates.lm, newdata=newdata, interval="confidence")
+  
+  lines(spline(x, hat[, "fit"]))
+  lines(spline(x, hat[, "lwr"]), lty=lty, col=col)
+  lines(spline(x, hat[, "upr"]), lty=lty, col=col)
+  
+}
+
+# reset plotting parameters to plot 1 plot
+par(mfrow=c(1,1))
+
+# plot the data
+with(geophones, plot(thickness~distance))
+grid()
+# add the 95% confidence interval (which is the default in predict.lm when interval set to "confidence")
+ConfInt = CIcurves(form = thickness~ns(distance, df = 5), data=geophones, newdata = geophones, col="purple", lty=3)
+
+legend("topright", legend = c("spline regression with 5 dof", "95% CI"), lty=c(1,3), col=c("black", "purple"))
+
+
+
+###############
+# 8.2
+
+str(head.injury)
+
+headglm = glm(formula = clinically.important.brain.injury ~ . , data = head.injury, family = "binomial")
+
+summary(headglm) 
+
+thresh = qlogis(p = 0.025)
+
