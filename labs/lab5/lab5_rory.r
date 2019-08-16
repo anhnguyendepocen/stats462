@@ -86,3 +86,30 @@ possum.bootz = boot(possum, possum.funz, R=999)
 print(z.inverse(boot.ci(possum.bootz, type="perc")$percent[4:5]))
 
 # The transformation is useful for helping to create a symmetric distribution of the correlation coefficient at high correlations. If you didn't do this, the standard deviation of the correlation coefficient would get smaller as you got closer to one meaning you'd need to take a larger number of bootstrap samples to effectively sample the space between r (near 1) and 1. This allows you to sample that space more efficiently. If you simply plot the z distribution, you'll see it's not important for values of |z| ~< 0.75.
+
+# 4.22
+
+pair65$diff = pair65$heated - pair65$ambient
+
+funlik = function(mu, sigma, x=with(pair65, heated-ambient))
+  prod(dnorm(x, mu, sigma))
+
+# What is sampel stddev? Asssume that for our values.
+print("sample stddev: ", with(pair65, sd(diff)))
+
+# Generate x/y pairs by calling funlik for multiple mu's
+xvals = seq(-5, 25, by=0.1)
+yvals = sapply(X = xvals, FUN = funlik, sigma=5.75)
+plot(yvals, yvals)
+
+# What we're seeing is the likelihood of x given that the true mu/sigma is what we passed in
+
+prior = dnorm(xvals, mean=6, sd=5)
+
+posterior = prior * yvals / sum(prior * yvals)
+plot(xvals, prior, y="log")
+lines(xvals, posterior)
+
+# Can also get the posterior using eqs on pg 134 of DAAG
+# Last question: Is it reasonable to view posterior as compromise between prior and likelihood? Yes, though better language might be
+# "an updated estimate given new data".
